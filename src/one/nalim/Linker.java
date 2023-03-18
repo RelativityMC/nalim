@@ -112,7 +112,7 @@ public class Linker {
             throw new IllegalArgumentException("Symbol not found: " + symbol);
         }
 
-        ByteBuffer buf = ByteBuffer.allocate(100).order(ByteOrder.nativeOrder());
+        ByteBuffer buf = ByteBuffer.allocate(1024).order(ByteOrder.nativeOrder());
         if (!naked) {
             callingConvention.javaToNative(buf, m.getParameterTypes(), m.getParameterAnnotations());
         }
@@ -172,5 +172,9 @@ public class Linker {
         );
 
         jvmci.getCodeCache().setDefaultCode(rm, nm);
+
+        if (nm.getInstallationFailureMessage() != null) {
+            throw new IllegalStateException(nm.getInstallationFailureMessage());
+        }
     }
 }

@@ -13,6 +13,30 @@ sourceSets {
             srcDir 'src'
         }
     }
+    test {
+        java {
+            srcDir 'test'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'net.bytebuddy:byte-buddy-agent:1.14.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+    workingDir project.buildDir
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = 'full'
+    }
+    jvmArgs "-XX:+UnlockExperimentalVMOptions", "-XX:+EnableJVMCI", "-XX:+UnlockDiagnosticVMOptions", "-XX:PrintAssemblyOptions=intel", "-XX:CompileCommand=print,one.nalim.test.*::*"
 }
 
 tasks.withType(JavaCompile) {
